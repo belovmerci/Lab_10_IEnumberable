@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 
 namespace Lab10_IEnumerable
 {
@@ -38,7 +39,7 @@ namespace Lab10_IEnumerable
 
         public TreeEnum(Node[] array)
         {
-            TreeNodes = array;
+            this.TreeNodes = array;
         }
 
         public bool MoveNext()
@@ -74,8 +75,8 @@ namespace Lab10_IEnumerable
     }
 
     class Tree : IEnumerable
-     {
-        public Node topNode { get; set; } 
+    {
+        public Node topNode { get; set; }
         public Tree(Node topNode = null)
         {
             this.topNode = topNode;
@@ -88,19 +89,21 @@ namespace Lab10_IEnumerable
 
         public TreeEnum GetEnumerator()
         {
-            List<Node> tempNodes = new List<Node>;
+            List<Node> tempNodes = new List<Node>();
             tempNodes.Add(new Node(0, topNode));
             Node currNode;
             int i = 0;
             while (true)
             {
-                if (tempNodes[i] == tempNodes.Capacity) break;
+                if (i == tempNodes.Capacity) break;
                 currNode = tempNodes[i];
-                if (currNode.Left) != null) tempNodes.Add(currNode.Left);
-                if (currNode.Right) != null) tempNodes.Add(currNode.Right);
+                if (currNode.Left != null) tempNodes.Add(currNode.Left);
+                if (currNode.Right != null) tempNodes.Add(currNode.Right);
                 i++;
             }
-            return new TreeEnum(TreeNodes);
+            Node[] resNodes = new Node[tempNodes.Capacity];
+            for (int j = 0; j < tempNodes.Capacity; j++) resNodes[j] = tempNodes[j];
+            return new TreeEnum(resNodes);
         }
 
         public void Add(int value)
@@ -135,7 +138,7 @@ namespace Lab10_IEnumerable
                 }
             }
         }
-     }
+    }
 
 
     class Program
@@ -146,7 +149,7 @@ namespace Lab10_IEnumerable
             Tree tree = new Tree(topNode);
 
             // add
-            for (int i = 1; i < 15; i++) { tree.Add(new Node(i)); }
+            for (int i = 1; i < 15; i++) { tree.Add(i); }
 
             // print
             foreach (Node node in tree) Console.Write($" {node.Data} ");
